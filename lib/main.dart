@@ -1,6 +1,9 @@
+// Libs
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:async';
+// Local Packages
+import 'package:myapp/dialogs.dart';
 
 void main() => runApp(MyApp());
 
@@ -83,8 +86,11 @@ class _MyHomePageState extends State<MyHomePage> {
               }
             ),
             RaisedButton(
-              onPressed: () async {await scheduleNotification(notifications,title: 'teste', body: 'tettete');},
-              child: Text('Schedule notifications')
+                onPressed: () async {
+                  final action = await Dialogs.yesAbortDialog(context, 'My title', 'My Body');
+                  print(action);
+                },
+                child: Text('Agendar')
             ),
             Expanded(
               child: ListView.builder(
@@ -110,40 +116,4 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-
-// Plataform Configuration ------------------------------------------------------------
-NotificationDetails get plataformConfig {
-  final androidChannelSpecifics = AndroidNotificationDetails(
-    'your channel id',
-    'your channel name',
-    'your channel description',
-    importance: Importance.Max,
-    priority: Priority.High,
-    ongoing: true,
-    autoCancel: true,
-  );
-  final iOSChannelSpecifics = IOSNotificationDetails();
-  return NotificationDetails(androidChannelSpecifics, iOSChannelSpecifics);
-}
-
-// Schedule Notificaton -------------------------------------------------------------
-  var scheduledDate = DateTime.now().add(Duration(seconds: 5));
-
-  Future scheduleNotification(
-    FlutterLocalNotificationsPlugin notifications, {
-    @required String title,
-    @required String body,
-    int id = 0,
-  }) =>
-      showScheduledNotification(notifications,
-          title: title, body: body, id: id, type: plataformConfig);
-
-  Future showScheduledNotification(
-    FlutterLocalNotificationsPlugin notifications, {
-    @required String title,
-    @required String body,
-    @required NotificationDetails type,
-    int id = 1,
-  }) =>
-  notifications.schedule(id, title, body, scheduledDate, type);
 }
