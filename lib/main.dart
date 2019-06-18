@@ -12,9 +12,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Tasks',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      /*theme: ThemeData(
+        primarySwatch: Colors.deepPurple[300],
+      ),*/
       home: MyHomePage(title: 'Tasks'),
     );
   }
@@ -74,48 +74,52 @@ class _MyHomePageState extends State<MyHomePage> {
       title: title,
       home: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.deepPurple,
           title: Text(title),
         ),
         body: Column(
           children: <Widget>[
-            TextField(
-              onSubmitted: (String input) {
-                setState(() {
-                  tasks.add(input);
-                });
-              }
-            ),
-            RaisedButton(
-                onPressed: () async {
-                  // Calling Dialog in dialogs.dart 
-                  // And opening dialog to schedule and add a new task
-                  final action = await Dialogs.yesAbortDialog(context, 'New Task', 'My Body', tasks);
-                  setState(() {
-                    tasks = action;
-                  });
-                },
-                child: Text('Agendar')
-            ),
             Expanded(
               child: ListView.builder(
                 itemCount: tasks.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
+                  return Container(
+                    decoration: BoxDecoration(color: Colors.grey[800], boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        offset: Offset(3.0, 6.0),
+                        blurRadius: 10,
+                      )
+                    ]),
+                    child: ListTile(
+                      title: Text('${tasks[index]}'),
                       leading: FlatButton(
-                        color: Colors.blue,
+                        color: Colors.deepPurple[500],
                         textColor: Colors.white,
                         onPressed: () {
                           removeTask(index);
                         },
-                        child: Text(
-                          "Remove",
-                        ),
+                        child: Icon(Icons.remove),
                       ),
-                      title: Text('${tasks[index]}'));
+                    )
+                  );
                 },
               ),
             ),
           ]
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            // Calling Dialog in dialogs.dart 
+            // And opening dialog to schedule and add a new task
+            final action = await Dialogs.yesAbortDialog(context, 'New Task', 'My Body', tasks);
+            setState(() {
+              tasks = action;
+            });
+          },
+          backgroundColor: Colors.deepPurple,
+          tooltip: 'Add Task',
+          child: Icon(Icons.add),
         ),
       ),
     );
