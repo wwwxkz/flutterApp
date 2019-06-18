@@ -12,9 +12,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Tasks',
-      /*theme: ThemeData(
-        primarySwatch: Colors.deepPurple[300],
-      ),*/
+      theme: ThemeData(
+        primarySwatch: Colors.deepPurple,
+      ),
       home: MyHomePage(title: 'Tasks'),
     );
   }
@@ -84,16 +84,25 @@ class _MyHomePageState extends State<MyHomePage> {
                 itemCount: tasks.length,
                 itemBuilder: (context, index) {
                   return Container(
-                    decoration: BoxDecoration(color: Colors.grey[800], boxShadow: [
+                    margin: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                    decoration: BoxDecoration(color: Colors.white, boxShadow: [
                       BoxShadow(
                         color: Colors.black12,
-                        offset: Offset(3.0, 6.0),
+                        offset: Offset(3.0, 3.0),
                         blurRadius: 10,
                       )
-                    ]),
+                    ],
+                    borderRadius: BorderRadius.circular(5.0),
+                    ),
                     child: ListTile(
-                      title: Text('${tasks[index]}'),
-                      leading: FlatButton(
+
+                      title: Text(
+                        '${tasks[index]}',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 22)
+                      ),
+                      trailing: FlatButton(
+                        //shape: CircleBorder(),
                         color: Colors.deepPurple[500],
                         textColor: Colors.white,
                         onPressed: () {
