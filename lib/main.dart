@@ -87,8 +87,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             RaisedButton(
                 onPressed: () async {
-                  final action = await Dialogs.yesAbortDialog(context, 'My title', 'My Body');
-                  print(action);
+                  // Calling Dialog in dialogs.dart 
+                  // And opening dialog to schedule and add a new task
+                  final action = await Dialogs.yesAbortDialog(context, 'New Task', 'My Body', tasks);
+                  setState(() {
+                    tasks = action;
+                  });
                 },
                 child: Text('Agendar')
             ),

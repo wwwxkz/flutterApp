@@ -1,24 +1,33 @@
-
+// Libs
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
 
+// Dialog returns
 enum DialogAction { yes, abort }
 
 class Dialogs { 
+  // Local notifications init
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   static final notifications = FlutterLocalNotificationsPlugin();
 
+  // Date Time Format
   DateTime selectedDate = DateTime.now();
-
   final DateFormat dateFormat = DateFormat('yyyy-MM-dd-HH-mm');
   
-  static Future<DialogAction> yesAbortDialog(
+  // Variable to store user input
+  static String taskName;
+  static String taskBody;
+
+  static Future yesAbortDialog(
       BuildContext context,
       String title,
       String body,
+      var tasks,
       ) async {
+    var localTasks = [];
+    localTasks = tasks;
     final action = await showDialog(
       context: context,
       barrierDismissible: false,
@@ -28,7 +37,29 @@ class Dialogs {
             borderRadius: BorderRadius.circular(10),
           ),
           title: Text(title),
-          content: Text(body),
+          content: new Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              new TextField(
+                autofocus: true,
+                decoration: new InputDecoration(
+                    labelText: 'Task Name', hintText: 'ex. Do homework'),
+                onChanged: (input) {
+                  taskName = input;
+                },
+              ),
+              new TextField(
+                autofocus: true,
+                decoration: new InputDecoration(
+                    labelText: 'Task Body', hintText: 'ex. Come on men'),
+                onChanged: (input) {
+                  taskBody = input;
+                },
+              ),
+            ],
+          ),
+          
           actions: <Widget>[
             RaisedButton(
               onPressed: () async{
@@ -47,8 +78,11 @@ class Dialogs {
                   timeSelected.minute,
                 );
 
+                // Adding task to local tasks var
+                if (taskName != null) localTasks.add(taskName);//else return;
+
                 //print(selectedDateAndTime);
-                await scheduleNotification(notifications, scheduledDate: selectedDateAndTime, title: 'dialog mensage', body: 'teste body hello men');
+                await scheduleNotification(notifications, scheduledDate: selectedDateAndTime, title: taskName, body: taskBody);
               },
               child: const Text(
                 'Agendar',
@@ -65,7 +99,10 @@ class Dialogs {
         );
       },
     );
-    return (action != null) ? action : DialogAction.abort;
+    if (action != null){
+      return localTasks; 
+    }
+    //return (action != null) ? action : DialogAction.abort;
   }
 
   // Time Picker ----------------------------------------------------------------------
