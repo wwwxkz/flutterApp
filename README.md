@@ -1,7 +1,7 @@
 # Flutter App
 Simple flutter app to organize your tasks 
 
-<img src="https://github.com/wxkz/flutterApp/blob/master/README/gif.gif" height="500" width="300">
+<img src="https://github.com/wwwxkz/flutterApp/blob/master/README/gif.gif" height="500" width="300">
 
 How to install:
   * https://flutter.dev/docs/get-started/install
